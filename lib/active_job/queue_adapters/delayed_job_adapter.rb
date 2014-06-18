@@ -3,11 +3,6 @@ require 'delayed_job'
 module ActiveJob
   module QueueAdapters
     class DelayedJobAdapter
-
-      #def default_chkid task, *args
-      #  ActiveJob::Arguments.deserialize(task.args).first == args.first
-      #end
-
       class << self
         def enqueue(job, *args)
           priority = 0
@@ -23,16 +18,11 @@ module ActiveJob
         end
 
         def dequeue(job, *args, &block)
-          #if block_given?
-          #  chkid = Proc.new do |job, args| yield(job, *args) end
-          #else
-          #  chkid = Proc.new do |job, args| default_chkid(job, *args) end
-          #end
           handler = job.new
-          Delayed::Job.all.each do |enqjob|
-            task = enqjob.payload_object
-            if handler.check_id(task, *args)
-              enqjob.destroy
+          Delayed::Job.all.each do |job_model|
+            enqueued_job = job_model.payload_object
+            if handler.filter_job(enqueued_job, *args)
+              job_model.destroy
             end
           end
         end

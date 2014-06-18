@@ -3,6 +3,7 @@ require 'active_job/queue_name'
 require 'active_job/enqueuing'
 require 'active_job/dequeuing'
 require 'active_job/execution'
+require 'active_job/job_filter'
 require 'active_job/callbacks'
 require 'active_job/identifier'
 require 'active_job/logging'
@@ -15,6 +16,7 @@ module ActiveJob
     include Enqueuing
     include Dequeuing
     include Execution
+    include JobFilter
     include Callbacks
     include Identifier
     include Logging
