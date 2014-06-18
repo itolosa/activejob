@@ -9,7 +9,7 @@ module ActiveJob
     #  include ActiveSupport::Rescuable
     #end
 
-    def default_filtering(enqueued_job, arguments)
+    def default_filtering(job_args, arguments)
       job_args.first == arguments.first
     end
 
