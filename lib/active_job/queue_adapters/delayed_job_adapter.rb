@@ -4,9 +4,9 @@ module ActiveJob
   module QueueAdapters
     class DelayedJobAdapter
 
-      def default_chkid task, *args
-        ActiveJob::Arguments.deserialize(task.args).first == args.first
-      end
+      #def default_chkid task, *args
+      #  ActiveJob::Arguments.deserialize(task.args).first == args.first
+      #end
 
       class << self
         def enqueue(job, *args)
@@ -23,15 +23,14 @@ module ActiveJob
         end
 
         def dequeue(job, *args, &block)
-          if block_given?
-            chkid = Proc.new do |job, args| yield(job, *args) end
-          else
-            chkid = Proc.new do |job, args| default_chkid(job, *args) end
-          end
-
+          #if block_given?
+          #  chkid = Proc.new do |job, args| yield(job, *args) end
+          #else
+          #  chkid = Proc.new do |job, args| default_chkid(job, *args) end
+          #end
           Delayed::Job.all.each do |enqjob|
             task = enqjob.payload_object
-            if chkid(task, args)
+            if job.check_id(task, *args)
               enqjob.destroy
             end
           end

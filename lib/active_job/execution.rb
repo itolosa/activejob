@@ -20,6 +20,16 @@ module ActiveJob
       rescue_with_handler(exception) || raise(exception)
     end
 
+    def check_id(enqueued_job, *arguments)
+      #enqueued_args = Arguments.deserialize(enqueued_job.serialized_args)
+      #identify_job *enqueued_args, *arguments
+      identify_job enqueued_job, *arguments
+    end
+
+    def identify_job(*)
+      raise NotImplementedError
+    end
+
     def perform(*)
       raise NotImplementedError
     end
