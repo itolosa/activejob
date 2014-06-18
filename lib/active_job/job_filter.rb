@@ -9,9 +9,16 @@ module ActiveJob
     #  include ActiveSupport::Rescuable
     #end
 
-    def filter_job(enqueued_job, *arguments)
+    def default_filtering(enqueued_job, arguments)
+      job_args.first == arguments.first
+    end
+
+    def filter_job(serialized_args, arguments)
       if defined? filter
-        filter enqueued_job, *arguments
+        job_args[1..-1] = Arguments.deserialize(serialized_args[1..-1])
+        filter job_args, arguments
+      else
+        default_filtering job_args, arguments
       end
     end
   end

@@ -12,8 +12,8 @@ module ActiveJob
       #
       # Returns an instance of the job class queued with args available in
       # Job#arguments and the timestamp in Job#enqueue_at.
-      def dequeue(*args, &block)
-        queue_adapter.dequeue self, *args, &block
+      def dequeue(*args)
+        queue_adapter.dequeue self, *args
       end
     end
   end
