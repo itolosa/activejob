@@ -6,14 +6,10 @@ module ActiveJob
     module ClassMethods
       # Dequeue an existent job
       #
-      #   dequeue("mike")
-      #         or
       #   dequeue(user_id)
       #
-      # Returns an instance of the job class queued with args available in
-      # Job#arguments and the timestamp in Job#enqueue_at.
-      def dequeue(*args)
-        queue_adapter.dequeue self, *args
+      def dequeue(*args, &blk)
+        queue_adapter.dequeue self, *args, &blk
       end
     end
   end

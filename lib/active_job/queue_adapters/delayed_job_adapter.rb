@@ -17,11 +17,11 @@ module ActiveJob
           Delayed::Job.enqueue(task, priority: priority, run_at: enqtime, queue: job.queue_name)
         end
 
-        def dequeue(job, *args)
+        def dequeue(job, *args, &blk)
           handler = job.new
           Delayed::Job.all.each do |job_model|
             enqueued_args = job_model.payload_object.args
-            if handler.filter_job(enqueued_args, args)
+            if handler.filter_job(enqueued_args, args, &blk)
               job_model.destroy
             end
           end

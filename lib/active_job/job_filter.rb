@@ -13,13 +13,21 @@ module ActiveJob
       job_args.first == arguments.first
     end
 
-    def filter_job(serialized_args, arguments)
-      if defined? filter
+    def filter_job(serialized_args, arguments, &blk)
+      if block_given?
+        job_args = Array.new(serialized_args)
+        job_args[1..-1] = Arguments.deserialize(serialized_args[1..-1])
+        yield job_args, arguments
+      elsif defined? filter
         job_args = Array.new(serialized_args)
         job_args[1..-1] = Arguments.deserialize(serialized_args[1..-1])
         filter job_args, arguments
       else
-        default_filtering serialized_args, arguments
+        if arguments.empty?
+          default_filtering [job.job_id], arguments
+        else
+          default_filtering serialized_args, arguments
+        end
       end
     end
   end
