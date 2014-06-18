@@ -12,6 +12,7 @@ module ActiveJob
 
     include QueueName
     include Enqueuing
+    include Dequeuing
     include Execution
     include Callbacks
     include Identifier
