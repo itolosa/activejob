@@ -1,6 +1,7 @@
 require 'active_job/queue_adapter'
 require 'active_job/queue_name'
 require 'active_job/enqueuing'
+require 'active_job/dequeuing'
 require 'active_job/execution'
 require 'active_job/callbacks'
 require 'active_job/identifier'
