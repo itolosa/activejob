@@ -28,9 +28,10 @@ module ActiveJob
           #else
           #  chkid = Proc.new do |job, args| default_chkid(job, *args) end
           #end
+          handler = job.new
           Delayed::Job.all.each do |enqjob|
             task = enqjob.payload_object
-            if job.check_id(task, *args)
+            if handler.check_id(task, *args)
               enqjob.destroy
             end
           end
