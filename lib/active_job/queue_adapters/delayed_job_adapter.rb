@@ -20,16 +20,17 @@ module ActiveJob
         def dequeue(job, *args, &blk)
           handler = job.new
           all_jobs = Delayed::Job.all
+
           return all_jobs.last.destroy if args.empty?
+
           all_jobs.each do |job_model|
             enqueued_args = job_model.payload_object.args
             if handler.filter_job(enqueued_args, args, &blk)
               job_model.destroy
             end
           end
-        end
 
-        def dequeue_empty()
+        end
       end
 
       class JobWrapper < Struct.new(:job, :args)
