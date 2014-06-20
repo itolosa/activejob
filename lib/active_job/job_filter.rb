@@ -23,11 +23,7 @@ module ActiveJob
         job_args[1..-1] = Arguments.deserialize(serialized_args[1..-1])
         filter job_args, arguments
       else
-        if arguments.empty?
-          default_filtering [job.job_id], arguments
-        else
-          default_filtering serialized_args, arguments
-        end
+        default_filtering serialized_args, arguments
       end
     end
   end
