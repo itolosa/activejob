@@ -21,7 +21,13 @@ module ActiveJob
           handler = job.new
           all_jobs = Delayed::Job.all
 
-          return all_jobs.last.destroy if args.empty?
+          if args.empty?
+            unless all_jobs.empty?
+              return all_jobs.last.destroy
+            else
+              return nil
+            end
+          end
 
           all_jobs.each do |job_model|
             enqueued_args = job_model.payload_object.args
